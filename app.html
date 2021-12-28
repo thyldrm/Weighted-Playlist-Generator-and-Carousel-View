@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Weighted Playlist Generator and Carousel View</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://kit.fontawesome.com/d1531cc4ce.js"
+            crossorigin="anonymous"
+        ></script>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="input-group mt-5">
+                <button
+                    class="btn btn-outline-warning"
+                    type="button"
+                    id="button-add"
+                >
+                    +Add New Item
+                </button>
+                <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                    id="button-generate"
+                >
+                    Generate
+                </button>
+            </div>
+
+            <ul class="list-group list-group-flush mt-5"></ul>
+
+            <ol class="generatedList"></ol>
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <p><i class="fas fa-edit"></i>Add New Item / Edit Item</p>
+                    Name:
+                    <input id="input-name" placeholder="Zorunlu Alan" /> Url:
+                    <input id="input-url" placeholder="Zorunlu Alan" /> Weight:
+                    <input
+                        type="range"
+                        name="ageInputName"
+                        id="ageInputId"
+                        value="1"
+                        min="1"
+                        max="10"
+                        oninput="ageOutputId.value = ageInputId.value"
+                    />
+                    <output name="ageOutputName" id="ageOutputId">1</output>
+                    <div class="d-flex mt-4">
+                        <button class="btn btn-primary mr-2" id="save">
+                            Save
+                        </button>
+                        <button class="btn btn-danger" id="cancel">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="change"></div>
+        <div class="container slider mt-2">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <img class="card-img-top" src="" alt="" />
+                        <div class="card-body"></div>
+                        <i class="fas fa-arrow-circle-left fa-2x"></i>
+                        <i class="fas fa-arrow-circle-right fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
