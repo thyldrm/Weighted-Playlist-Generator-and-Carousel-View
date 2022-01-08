@@ -9,7 +9,7 @@ const change = document.getElementById("change");
 var listGroup = document.querySelector(".list-group");
 var slider = document.querySelector(".slider");
 var generatedList = document.querySelector(".generatedList");
-var elemans = JSON.parse(localStorage.getItem("todo-list"));
+var elemans = JSON.parse(localStorage.getItem("media-list"));
 var modal = document.getElementById("modal");
 
 let editMode = false;
@@ -44,15 +44,19 @@ save.addEventListener("click", () => {
             currentRecord.children[1].innerHTML = inputWeight.value;
             currentRecord.children[2].src = inputUrl.value;
 
-            const foundItem = elemans.find(e => e.id == currentRecord.children[2].id);
+            const foundItem = elemans.find(e => e.id == currentRecord.children[3].id);
             foundItem.name = inputName.value;
             foundItem.weight = inputWeight.value;
             foundItem.url = inputUrl.value;
 
             currentRecord = undefined;
         }
-        localStorage.setItem("todo-list", JSON.stringify(elemans));
+        localStorage.setItem("media-list", JSON.stringify(elemans));
     }
+    function refreshPage(){
+        window.location.reload();
+    } 
+    refreshPage();
     inputName.value = '';
     inputWeight.value = 0;
     inputUrl.value = '';
@@ -65,12 +69,10 @@ const initAction = () => {
 };
 initAction();
 
-
-
 function action(e) {
     if (e.target.id == "button-delete") {
         elemans = elemans.filter((eleman) => e.target.parentElement.children[3].id != eleman.id);
-        localStorage.setItem("todo-list", JSON.stringify(elemans));
+        localStorage.setItem("media-list", JSON.stringify(elemans));
         e.target.parentElement.remove();
     } else if (e.target.id == "button-edit") {
         modal.style.display = "block";
@@ -86,13 +88,13 @@ function createListElement(text, weightData, url, id) {
     if (!text) return;
 
     const newElement = document.createElement("li");
-    newElement.className = "list-group-item d-flex justify-content-between";
+    newElement.className = "list-group-item";
 
     const span = document.createElement("span");
     span.innerText = text;
 
     const weight = document.createElement('span');
-    weight.innerText = "Weight : " + weightData;
+    weight.innerText = " Weight : " + weightData;
 
     const urlImage = document.createElement('input');
     urlImage.src = url;
@@ -107,11 +109,11 @@ function createListElement(text, weightData, url, id) {
     const btnDelete = document.createElement("button");
     const btnEdit = document.createElement("button");
 
-    btnEdit.className = "btn btn-outline-secondary";
+    btnEdit.className = "btn";
     btnEdit.id = "button-edit";
     btnEdit.innerText = "Düzenle";
 
-    btnDelete.className = "btn btn-outline-danger";
+    btnDelete.className = "btn";
     btnDelete.id = "button-delete";
     btnDelete.innerText = "Sil";
 
@@ -131,8 +133,6 @@ cancel.onclick = function () {
     inputWeight.value = 0;
     inputUrl.value = '';
 }
-
-
 let totalWeight = 0;
 for (let j = 0; j < elemans.length; j++) {
     totalWeight += Number(elemans[j].weight)
@@ -140,14 +140,10 @@ for (let j = 0; j < elemans.length; j++) {
 const newList = []
 for (let i = 0; i < elemans.length; i++) {
     let weightMedias = Number(elemans[i].weight) / Number(totalWeight);
-    // console.log(elemans[i])
     elemans[i].percentWeight = weightMedias;
     newList.push(elemans[i])
 }
-// console.log(newList)
-
 slider.style.display = "none"
-
 btnGenerate.addEventListener("click", () => {
     var pool = Number(prompt("Kaç havuzluk liste oluşsun?"))
 
@@ -156,8 +152,6 @@ btnGenerate.addEventListener("click", () => {
     let arr = [];
     for (let i = 0; i < elemans.length; i++) {
         kacDefa = pool * elemans[i].percentWeight
-        // console.log(kacDefa)
-        // console.log(elemans[i].name, -Math.round(-kacDefa))
         toplam += -Math.round(-kacDefa);
         arr.push({
             name: elemans[i].name,
@@ -165,31 +159,25 @@ btnGenerate.addEventListener("click", () => {
             counter: -Math.round(-kacDefa)
         })
     }
-    // console.log(toplam)
-    // console.log(arr)
     let arr2 = [];
     var urls;
-    if (toplam !== pool) {
+    if (toplam !== pool || pool < elemans.length) {
         document.write("ERROR : Bir liste oluşamaz.");
     } else {
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < arr[i].counter; j++) {
-                //console.log(arr[i].name)
                 arr2.push({
                     name: arr[i].name,
                     url: arr[i].url
                 })
             }
         }
-        //console.log(arr2)
         let arrName = []
         let arrUrl = []
         for (let i = 0; i < arr2.length; i++) {
             arrName.push(arr2[i].name)
             arrUrl.push(arr2[i].url)
         }
-        // console.log(arrName)
-        // console.log(arrUrl)
         function spread(input) {
             function findMaxKey() {
                 var max = 0, key;
@@ -208,9 +196,8 @@ btnGenerate.addEventListener("click", () => {
                 i = 0, k = findMaxKey(), l,
                 outputLength = length[k],
                 output = Array.apply(Array, { length: outputLength }).map(function () { return []; });
-
             if (input.length - outputLength < outputLength - 1) {
-                document.write("ERROR : Bir liste oluşamaz.a");
+                document.write("ERROR : Bir liste oluşamaz.");
             }
             while (k = findMaxKey()) {
                 l = length[k];
@@ -228,7 +215,6 @@ btnGenerate.addEventListener("click", () => {
             item.appendChild(document.createTextNode(x[i]));
             generatedList.appendChild(item);
         }
-
         urls = spread(arrUrl)
     }
     var index = 0;
